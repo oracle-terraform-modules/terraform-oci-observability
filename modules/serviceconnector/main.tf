@@ -3,7 +3,7 @@
 
 resource "oci_sch_service_connector" "this" {
   for_each       = var.service_connector_def
-  compartment_id = var.compartment_ocid
+  compartment_id = each.value.compartment_id
   display_name   = each.value.display_name
   source {
     kind = each.value.sch_source
@@ -18,7 +18,7 @@ resource "oci_sch_service_connector" "this" {
     dynamic "log_sources" {
       for_each = each.value.sch_source == "logging" ? each.value.log_source : []
       content {
-        compartment_id = coalesce(log_sources.value.compartment_id, var.compartment_ocid)
+        compartment_id = coalesce(log_sources.value.compartment_id, each.value.compartment_id)
         log_group_id   = log_sources.value.log_group_id
         log_id         = log_sources.value.log_id
 
@@ -28,7 +28,7 @@ resource "oci_sch_service_connector" "this" {
       for_each = each.value.sch_source == "monitoring" ? each.value.monitoring_source : []
       content {
 
-        compartment_id = coalesce(monitoring_sources.value.compartment_id, var.compartment_ocid)
+        compartment_id = coalesce(monitoring_sources.value.compartment_id, each.value.compartment_id)
         namespace_details {
           kind = "selected"
           dynamic "namespaces" {
@@ -49,7 +49,7 @@ resource "oci_sch_service_connector" "this" {
     kind                       = each.value.sch_target
     log_group_id               = each.value.sch_target == "loggingAnalytics" ? each.value.target.log_group_id : null
     log_source_identifier      = (each.value.sch_source == "streaming" && each.value.sch_target == "loggingAnalytics") ? each.value.target.la_log_source : null
-    compartment_id             = coalesce(each.value.target.compartment_id, var.compartment_ocid)
+    compartment_id             = each.value.sch_target == "monitoring" ? coalesce(each.value.target.compartment_id, each.value.compartment_id) : null
     stream_id                  = each.value.sch_target == "streaming" ? each.value.target.stream_id : null
     bucket                     = each.value.sch_target == "objectstorage" ? each.value.target.bucket : null
     object_name_prefix         = each.value.sch_target == "objectstorage" ? each.value.target.object_name_prefix : null

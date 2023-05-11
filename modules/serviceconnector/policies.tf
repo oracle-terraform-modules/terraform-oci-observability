@@ -5,15 +5,15 @@ locals {
   policy_compartment_id = var.policy_compartment_id == null ? var.tenancy_ocid : var.policy_compartment_id
 
   target_policies = {
-    for k, v in var.service_connector_def : k => (v.create_policy && v.sch_target == "loggingAnalytics") ? "Allow dynamic-group ${var.dynamic_group_name} to use loganalytics-log-group in compartment id ${coalesce(v.target.compartment_id, var.compartment_ocid)} where target.loganalytics-log-group.id='${v.target.log_group_id}'" :
-    (v.create_policy && v.sch_target == "notifications") ? "Allow dynamic-group ${var.dynamic_group_name} to use ons-topics in compartment id ${coalesce(v.target.compartment_id, var.compartment_ocid)}" :
-    (v.create_policy && v.sch_target == "functions") ? "Allow dynamic-group ${var.dynamic_group_name} to use fn-invocation in compartment id ${coalesce(v.target.compartment_id, var.compartment_ocid)}" :
-    (v.create_policy && v.sch_target == "objectstorage") ? "Allow dynamic-group ${var.dynamic_group_name} to manage objects in compartment id ${coalesce(v.target.compartment_id, var.compartment_ocid)} where target.bucket.name='${coalesce(v.target.bucket_name, "dummy")}'" :
-    (v.create_policy && v.sch_target == "streaming") ? "Allow dynamic-group ${var.dynamic_group_name} to use stream-push in compartment id ${coalesce(v.target.compartment_id, var.compartment_ocid)} where target.stream.id='${v.target.stream_id}'" : ""
+    for k, v in var.service_connector_def : k => (v.create_policy && v.sch_target == "loggingAnalytics") ? "Allow dynamic-group ${v.dynamic_group_name} to use loganalytics-log-group in compartment id ${coalesce(v.target.compartment_id, v.compartment_id)} where target.loganalytics-log-group.id='${v.target.log_group_id}'" :
+    (v.create_policy && v.sch_target == "notifications") ? "Allow dynamic-group ${v.dynamic_group_name} to use ons-topics in compartment id ${coalesce(v.target.compartment_id, v.compartment_id)}" :
+    (v.create_policy && v.sch_target == "functions") ? "Allow dynamic-group ${v.dynamic_group_name} to use fn-invocation in compartment id ${coalesce(v.target.compartment_id, v.compartment_id)}" :
+    (v.create_policy && v.sch_target == "objectstorage") ? "Allow dynamic-group ${v.dynamic_group_name} to manage objects in compartment id ${coalesce(v.target.compartment_id, v.compartment_id)} where target.bucket.name='${v.target.bucket}'" :
+    (v.create_policy && v.sch_target == "streaming") ? "Allow dynamic-group ${v.dynamic_group_name} to use stream-push in compartment id ${coalesce(v.target.compartment_id, v.compartment_id)} where target.stream.id='${v.target.stream_id}'" : ""
   }
   source_policies = {
-    for k, v in var.service_connector_def : k => (v.create_policy && v.sch_source == "streaming") ? "Allow dynamic-group ${var.dynamic_group_name} to {STREAM_READ, STREAM_CONSUME} in compartment id ${coalesce(v.target.compartment_id, var.compartment_ocid)} where target.stream.id='${v.stream_id}'" :
-    (v.create_policy && v.sch_source == "monitoring") ? "Allow dynamic-group ${var.dynamic_group_name} to read metrics in compartment id ${coalesce(v.target.compartment_id, var.compartment_ocid)}" : ""
+    for k, v in var.service_connector_def : k => (v.create_policy && v.sch_source == "streaming") ? "Allow dynamic-group ${v.dynamic_group_name} to {STREAM_READ, STREAM_CONSUME} in compartment id ${coalesce(v.target.compartment_id, v.compartment_id)} where target.stream.id='${v.stream_id}'" :
+    (v.create_policy && v.sch_source == "monitoring") ? "Allow dynamic-group ${v.dynamic_group_name} to read metrics in compartment id ${coalesce(v.target.compartment_id, v.compartment_id)}" : ""
   }
 
   allpolicies = { for key in distinct(concat(keys(local.target_policies), keys(local.source_policies))) :
@@ -30,11 +30,11 @@ locals {
 resource "oci_identity_dynamic_group" "serviceconnector_dynamic_group" {
   provider = oci.home
 
-  count          = var.create_dg ? 1 : 0
+  for_each       = var.dynamic_group
   compartment_id = var.tenancy_ocid
   description    = "Dynamic group for service connector"
-  matching_rule  = "All {resource.type = 'serviceconnector', resource.compartment.id = '${var.compartment_ocid}'}"
-  name           = var.dynamic_group_name
+  matching_rule  = "All {resource.type = 'serviceconnector', resource.compartment.id = '${each.value.compartment_id}'}"
+  name           = each.key
 
 }
 

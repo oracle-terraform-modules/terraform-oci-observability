@@ -36,7 +36,7 @@ resource "oci_ons_subscription" "this" {
 resource "oci_monitoring_alarm" "this" {
   for_each                     = length(var.alarm_def) > 0 ? var.alarm_def : {}
   compartment_id               = var.compartment_ocid
-  destinations                 = [try(oci_ons_notification_topic.this_topic[each.value.destination].id, data.oci_ons_notification_topics.existing_topic[each.value.destination].notification_topics[0].topic_id, each.value.destination)]
+  destinations                 = [try(oci_ons_notification_topic.this[each.value.destination].id, data.oci_ons_notification_topics.existing_topic[each.value.destination].notification_topics[0].topic_id, each.value.destination)]
   display_name                 = var.label_prefix == "none" ? each.key : format("%s_%s", var.label_prefix, each.key)
   is_enabled                   = each.value.is_enabled
   metric_compartment_id        = each.value.metric_compartment_id == null ? var.compartment_ocid : each.value.metric_compartment
@@ -64,7 +64,7 @@ locals {
   notification_subscription = flatten([
     for topic_key, topic_value in var.notification : [
       for subscription_key, subscription_value in topic_value.subscription : {
-        topic_id      = topic_value.create_topic ? oci_ons_notification_topic.this_topic[topic_key].id : data.oci_ons_notification_topics.existing_topic[topic_key].notification_topics[0].topic_id
+        topic_id      = topic_value.create_topic ? oci_ons_notification_topic.this[topic_key].id : data.oci_ons_notification_topics.existing_topic[topic_key].notification_topics[0].topic_id
         protocol      = subscription_value.protocol
         endpoint      = subscription_value.endpoint
         subscription  = format("%s_%s", topic_key, subscription_key)

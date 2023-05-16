@@ -3,5 +3,5 @@
 
 output "topic_ids" {
   description = "Notification Topic OCID"
-  value       = { for k in oci_ons_notification_topic.this_topic : k.name => k.topic_id }
+  value       = { for k in oci_ons_notification_topic.this : k.name => k.topic_id }
 }

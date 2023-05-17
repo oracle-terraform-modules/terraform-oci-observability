@@ -1,0 +1,30 @@
+provider "oci" {
+  region           = "<region where service connector to be created>"
+  fingerprint      = ""
+  private_key_path = ""
+
+  tenancy_ocid = ""
+  user_ocid    = ""
+
+}
+
+provider "oci" {
+  alias            = "home"
+  region           = "<region>"
+  fingerprint      = ""
+  private_key_path = ""
+
+  tenancy_ocid = ""
+  user_ocid    = ""
+
+}
+
+terraform {
+  required_providers {
+    oci = {
+      source  = "oracle/oci"
+      version = ">= 4.67.3"
+    }
+  }
+  required_version = ">= 1.3.0"
+}

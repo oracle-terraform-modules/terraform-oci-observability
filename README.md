@@ -1,22 +1,17 @@
 # Oracle Cloud Infrastructure Terraform Module for Observability
 
-*This module is for creating resources related to Observability in Oracle Cloud Infrastructure*
+*This module is for creating resources related to [Observability](https://www.oracle.com/in/manageability/) in Oracle Cloud Infrastructure*
 
-## Installation
+## Pre-requisites:
 
-*Provide detailed step-by-step installation instructions*
-
+- git is installed. 
+- Terraform 1.3.0 or higher version is installed.
+- [Required keys]([https://](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/apisigningkey.htm)) are availabe for authentication
 ## Documentation
-
-*Developer-oriented documentation can be published on GitHub, but all product documentation must be published on <https://docs.oracle.com>*
-
-## Examples
-
-*Describe any included examples or provide a link to a demo/tutorial*
-
-## Help
-
-*Inform users on where to get help or how to receive official support from Oracle (if applicable)*
+Please refer to the [examples](https://github.com/oracle-terraform-modules/terraform-oci-oandm/tree/main/examples) on how to use each submodule.       
+Below are some reference document to understand the service related to the modules  
+[Alarm](https://docs.oracle.com/en-us/iaas/Content/Monitoring/Tasks/managingalarms.htm)  
+[ServiceConnector](https://docs.oracle.com/en-us/iaas/Content/service-connector-hub/overview.htm)  
 
 ## Contributing
 

@@ -1,0 +1,48 @@
+#Copyright (c) 2023 Oracle Corporation and/or its affiliates.
+#Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl
+
+tenancy_ocid = "<tenancy_ocid>"
+dynamic_group = {
+    sch_dg = { compartment_id = "<service connector compartment id>" }
+  }
+policy_compartment_id = "<policy compartment>" #if not set policy will be created default in root compartment
+service_connector_def = { sch_stream_storage = {
+    compartment_id = "<service connector compartment id>"
+    #If policy needs to be created set the below two values. By default its set to false to not create policy
+    #Set create_policy to true 
+    #set dynamic group name with respect to service connector compartment
+    create_policy      = true
+    dynamic_group_name = sch_dg
+
+    sch_source   = "streaming"
+    sch_target   = "objectstorage"
+    display_name = "sch_stream_storage"
+
+    stream_id = "<existing stream ocid>"
+    target = {
+      bucket = "<bucket name>"
+    }
+    }
+  sch_logging_LA = {
+    compartment_id = "<service connector compartment id>"
+    #If policy needs to be created set the below two values. By default its set to false to not create policy
+    #set dynamicgroup name with respect to service connector compartment
+    create_policy      = true
+    dynamic_group_name = sch_dg
+
+    sch_source   = "logging"
+    sch_target   = "loggingAnalytics"
+    display_name = "sch_logging_LA"
+
+    log_source = [{
+        #specify compartment_id if its different from service connector compartment
+        compartment_id = "<compartment_id>"
+        log_group_id = "<ocilogging_loggroup_id>"
+        
+      }]
+    
+    target = {
+      log_group_id = "<loggingAnalytics_loggroup_id>" 
+    }
+    }
+  }

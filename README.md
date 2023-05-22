@@ -6,7 +6,7 @@
 
 - git is installed. 
 - Terraform 1.3.0 or higher version is installed.
-- [Required keys]([https://](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/apisigningkey.htm)) are availabe for authentication
+- [Required keys](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/apisigningkey.htm) are availabe for authentication
 ## Documentation
 Please refer to the [examples](https://github.com/oracle-terraform-modules/terraform-oci-oandm/tree/main/examples) on how to use each submodule.       
 Below are some reference document to understand the service related to the modules  

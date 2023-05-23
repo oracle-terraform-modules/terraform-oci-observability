@@ -71,6 +71,6 @@ locals {
         defined_tags  = topic_value.defined_tags
         freeform_tags = topic_value.freeform_tags
       }
-    ]
+    ] if topic_value.subscription != null
   ])
 }

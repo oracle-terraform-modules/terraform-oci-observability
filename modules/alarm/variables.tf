@@ -35,10 +35,10 @@ variable "notification" {
     create_topic  = optional(bool, true)
     defined_tags  = optional(map(string))
     freeform_tags = optional(map(string))
-    subscription = map(object({
+    subscription = optional(map(object({
       endpoint = string
       protocol = string
-    }))
+    })))
   }))
 }
 

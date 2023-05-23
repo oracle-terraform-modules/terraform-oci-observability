@@ -1,0 +1,4 @@
+display_name,namespace,query,destination,create_topic,severity
+alarm1,oci_computeagent,CpuUtilization[1m].mean() > 80,demo1,true,
+alarm2,oci_computeagent,CpuUtilization[1m].mean() > 50,demotopic,false,WARNING
+alarm3,oci_computeagent,MemoryUtilization[1m].mean() > 80,demo1,true,

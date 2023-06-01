@@ -37,7 +37,7 @@ resource "oci_monitoring_alarm" "this" {
   for_each                     = length(var.alarm_def) > 0 ? var.alarm_def : {}
   compartment_id               = var.compartment_ocid
   destinations                 = [try(oci_ons_notification_topic.this[each.value.destination].id, data.oci_ons_notification_topics.existing_topic[each.value.destination].notification_topics[0].topic_id, each.value.destination)]
-  display_name                 = var.label_prefix == "none" ? each.key : format("%s_%s", var.label_prefix, each.key)
+  display_name                 = var.label_prefix == "none" ? each.value.display_name : format("%s_%s", var.label_prefix, each.value.display_name)
   is_enabled                   = each.value.is_enabled
   metric_compartment_id        = each.value.metric_compartment_id == null ? var.compartment_ocid : each.value.metric_compartment
   namespace                    = each.value.namespace
@@ -71,6 +71,6 @@ locals {
         defined_tags  = topic_value.defined_tags
         freeform_tags = topic_value.freeform_tags
       }
-    ]
+    ] if topic_value.subscription != null
   ])
 }

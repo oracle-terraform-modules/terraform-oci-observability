@@ -1,0 +1,35 @@
+#Copyright (c) 2023 Oracle Corporation and/or its affiliates.
+#Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl
+
+
+compartment_ocid = "<compartment where topic and alarm to be created>"
+alarm_def = {
+     alarm1 = {
+      display_name = "alarm1"
+      destination  = "demotopic"
+      namespace    = "oci_computeagent"
+      query        = "CpuUtilization[1m].mean() > 70"
+    }
+     alarm2 = {
+      display_name = "alarm2"
+      destination  = "demotopic"
+      namespace    = "oci_computeagent"
+      query        = "CpuUtilization[1m].mean() > 70"
+      severity     = "WARNING"
+      body         = "CPU is greater than 70 please follow the runbook"
+    }
+}
+notification = {
+    demotopic = {
+      subscription = {
+        sub1 = {
+          protocol = "EMAIL"
+          endpoint = "<email address>"
+        }
+        sub2 = {
+            protocol = "SMS"
+            endpoint = "<phonenumber>"
+        }
+      }
+    }
+}

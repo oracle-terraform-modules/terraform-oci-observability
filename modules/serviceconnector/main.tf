@@ -5,6 +5,7 @@ resource "oci_sch_service_connector" "this" {
   for_each       = var.service_connector_def
   compartment_id = each.value.compartment_id
   display_name   = each.value.display_name
+  state          = each.value.state
   source {
     kind = each.value.sch_source
     dynamic "cursor" {

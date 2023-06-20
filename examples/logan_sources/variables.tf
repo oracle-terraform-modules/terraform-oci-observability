@@ -11,13 +11,11 @@ variable "auth_type" {
 
 variable "tenancy_ocid" {
   type        = string
-  default     = "ocid1.tenancy.oc1..aaaaaaaa2biiw2clmshec34nq7rcdn2ga6q34rwq3erddvdht5qd4xbaex2a"
   description = "The OCID of the tenancy."
 }
 
 variable "compartment_ocid" {
   type        = string
-  default     = "ocid1.tenancy.oc1..aaaaaaaa2biiw2clmshec34nq7rcdn2ga6q34rwq3erddvdht5qd4xbaex2a"
   description = "The compartment OCID where all new resources will be created"
 }
 
@@ -27,7 +25,6 @@ variable "products" {
 
 variable "region" {
   type        = string
-  default     = "us-phoenix-1"
   description = "OCI region"
 }
 

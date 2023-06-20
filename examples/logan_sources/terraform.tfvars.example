@@ -1,0 +1,5 @@
+products="Oracle Adv1,Oracle Asts1"
+schema_names={
+              "{SCHEMA1}" = "ABC"
+              "{SCHEMA2}" = "XYZ"
+              }

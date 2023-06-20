@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<LoganContent xmlns="http://www.oracle.com/DataCenter/LogAnalyticsStd" content_version="2.66.1.0.0" name="content_ocid1.tenancy.oc1..aaaaaaaa2biiw2clmshec34nq7rcdn2ga6q34rwq3erddvdht5qd4xbaex2a_1683637479590" oms_version="2.66.1.0.0">
+   <Field oms_version="2.66.1.0.0">
+      <DisplayName>#Backend Status Code</DisplayName>
+      <Description>Shows a response code received from the backend</Description>
+      <FieldType>1</FieldType>
+      <IsSystem>0</IsSystem>
+      <IsPrimary>1</IsPrimary>
+      <DataType>INTEGER</DataType>
+      <IsMetricKeyEligible>0</IsMetricKeyEligible>
+      <IsMetricValueEligible>0</IsMetricValueEligible>
+      <FacetEligible>1</FacetEligible>
+      <RangeFacetEligible>0</RangeFacetEligible>
+      <TableEligible>1</TableEligible>
+      <FacetPriority>1</FacetPriority>
+      <Summarizable>1</Summarizable>
+      <HighCardinality>1</HighCardinality>
+      <LargeData>0</LargeData>
+      <MultiValued>0</MultiValued>
+      <SMAEnabledSetting>0</SMAEnabledSetting>
+   </Field>
+   <Source configWarningSettings="0" name="mvTestSrc1" oms_version="2.66.1.0.0">
+      <SourceType>os_file</SourceType>
+      <TargetTypes>
+         <TargetType>omc_host_linux</TargetType>
+      </TargetTypes>
+      <DisplayName>mvTestSrc1</DisplayName>
+      <IsSystem>0</IsSystem>
+      <IsSecureContent>1</IsSecureContent>
+      <Patterns>
+         <Pattern>
+            <Value>/{SCHEMA2}/var/{SCHEMA1}/access_log11</Value>
+            <IsInclude>1</IsInclude>
+            <InUse>1</InUse>
+            <IsSystem>0</IsSystem>
+            <IsEnabled>1</IsEnabled>
+         </Pattern>
+      </Patterns>
+      <Parsers>
+         <Parser>
+            <ParserSeq>1</ParserSeq>
+            <ParserName>host_httpdaccesslog_logtype</ParserName>
+         </Parser>
+      </Parsers>
+      <MdFieldReferences>
+         <MdFieldReference key="#Backend Status Code">
+            <FieldName>udfi1</FieldName>
+            <IsSystem>0</IsSystem>
+            <IsEnabled>1</IsEnabled>
+         </MdFieldReference>
+         <MdFieldReference key="Access Mask">
+            <FieldName>accmask</FieldName>
+            <IsSystem>0</IsSystem>
+            <IsEnabled>1</IsEnabled>
+         </MdFieldReference>
+      </MdFieldReferences>
+      <TagConditions>
+         <TagCondition alertRuleVisible="0" field="method" operator="CONTAINS">
+            <ConditionValues>
+               <ConditionValue>select</ConditionValue>
+            </ConditionValues>
+            <ConditionTags tagField="mtag">
+               <ConditionTag>actnstart</ConditionTag>
+            </ConditionTags>
+            <IsSystem>0</IsSystem>
+            <IsEnabled>1</IsEnabled>
+         </TagCondition>
+      </TagConditions>
+      <SourceFunctions>
+         <SourceFunction lookupMode="0" name="Geolocation" order="101" overrideOutputFields="1">
+            <SourceInputFields>
+               <InputField lkCol="IP Field" order="1">method</InputField>
+            </SourceInputFields>
+            <SourceOutputFields>
+               <OutputField lkCol="Continent" order="1">continentclnt</OutputField>
+               <OutputField lkCol="Country Code" order="4">countrycodeclnt</OutputField>
+               <OutputField lkCol="Coordinates" order="8">geolocclnt</OutputField>
+               <OutputField lkCol="Continent Code" order="2">continentcodeclnt</OutputField>
+               <OutputField lkCol="City" order="7">cityclnt</OutputField>
+               <OutputField lkCol="Country" order="3">countryclnt</OutputField>
+               <OutputField lkCol="State Code" order="6">regioncodeclnt</OutputField>
+               <OutputField lkCol="State" order="5">regionclnt</OutputField>
+            </SourceOutputFields>
+            <SourceFunctionFeatures>
+               <FunctionFeature>
+                  <Name>Geolocation</Name>
+               </FunctionFeature>
+            </SourceFunctionFeatures>
+            <IsSystem>0</IsSystem>
+            <IsEnabled>1</IsEnabled>
+         </SourceFunction>
+      </SourceFunctions>
+      <IsHidden>0</IsHidden>
+      <IsSMAEnabled>0</IsSMAEnabled>
+      <EventTypes>
+         <EventType>
+            <Name>test2</Name>
+            <SpecVersion>1.0</SpecVersion>
+            <IsEnabled>1</IsEnabled>
+            <IsSystem>0</IsSystem>
+         </EventType>
+      </EventTypes>
+   </Source>
+   <FieldNameMaps>
+      <FieldNameMap>
+         <Name>udfi1</Name>
+         <DisplayName>#Backend Status Code</DisplayName>
+      </FieldNameMap>
+   </FieldNameMaps>
+</LoganContent>

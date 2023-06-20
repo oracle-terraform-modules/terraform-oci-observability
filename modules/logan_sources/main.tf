@@ -9,6 +9,6 @@ resource null_resource import_contents {
   }
 
   provisioner "local-exec" {
-    command = "python3 ./scripts/import_contents.py -a ${self.triggers.auth_type} -p ${self.triggers.profile_name} -e ${self.triggers.schema_names} -f ${self.triggers.path}"
+    command = "python3 ../../scripts/import_contents.py -a ${self.triggers.auth_type} -p ${self.triggers.profile_name} -e ${self.triggers.schema_names} -f ${self.triggers.path}"
   }
 }

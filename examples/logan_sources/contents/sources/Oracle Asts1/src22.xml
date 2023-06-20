@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<LoganContent xmlns="http://www.oracle.com/DataCenter/LogAnalyticsStd" content_version="2.66.1.0.0" name="content_ocid1.tenancy.oc1..aaaaaaaa2biiw2clmshec34nq7rcdn2ga6q34rwq3erddvdht5qd4xbaex2a_1683637487119" oms_version="2.66.1.0.0">
+   <Source configWarningSettings="0" name="mvTestSrc2" oms_version="2.66.1.0.0">
+      <SourceType>os_file</SourceType>
+      <TargetTypes>
+         <TargetType>omc_host_linux</TargetType>
+      </TargetTypes>
+      <DisplayName>mvTestSrc2</DisplayName>
+      <IsSystem>0</IsSystem>
+      <IsSecureContent>1</IsSecureContent>
+      <Patterns>
+         <Pattern>
+            <Value>/{SCHEMA1}/var/{SCHEMA2}/tmp/access_log22</Value>
+            <IsInclude>1</IsInclude>
+            <InUse>1</InUse>
+            <IsSystem>0</IsSystem>
+            <IsEnabled>1</IsEnabled>
+         </Pattern>
+      </Patterns>
+      <Parsers>
+         <Parser>
+            <ParserSeq>1</ParserSeq>
+            <ParserName>host_httpdaccesslog_logtype</ParserName>
+         </Parser>
+      </Parsers>
+      <IsHidden>0</IsHidden>
+      <IsSMAEnabled>0</IsSMAEnabled>
+   </Source>
+</LoganContent>

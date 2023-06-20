@@ -1,5 +1,5 @@
 locals {
-  namespace = "ax1zffkcg1fy"
+  namespace = ""
 }
 
 module "logan_sources" {

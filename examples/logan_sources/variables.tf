@@ -6,26 +6,11 @@ variable "config_file_profile" {
 }
 
 variable "auth_type" {
-    default = "instance"
-}
-
-variable "tenancy_ocid" {
-  type        = string
-  description = "The OCID of the tenancy."
-}
-
-variable "compartment_ocid" {
-  type        = string
-  description = "The compartment OCID where all new resources will be created"
+    default = "user"
 }
 
 variable "products" {
   type = string
-}
-
-variable "region" {
-  type        = string
-  description = "OCI region"
 }
 
 variable "schema_names" {

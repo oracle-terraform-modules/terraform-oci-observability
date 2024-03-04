@@ -25,6 +25,9 @@ variable "alarm_def" {
     body                         = optional(string, null)
     freeform_tags                = optional(map(string))
     defined_tags                 = optional(map(string))
+    resolution                   = optional(string, "1m")
+    resource_group               = optional(string, null)
+    split_notification           = optional(bool, false)
   }))
 }
 

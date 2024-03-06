@@ -17,8 +17,8 @@ variable "alarm_def" {
     is_enabled                   = optional(bool, true)
     namespace                    = string
     metric_compartment_id        = optional(string)
-    repeat_notification_duration = optional(string, "PT5M")
-    trigger                      = optional(string, "PT5M")
+    repeat_notification_duration = optional(string)
+    trigger                      = optional(string, "PT1M")
     suppression_from_time        = optional(string)
     suppression_till_time        = optional(string)
     message_format               = optional(string, "RAW")

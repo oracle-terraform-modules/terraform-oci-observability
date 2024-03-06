@@ -1,4 +1,4 @@
-display_name,namespace,query,destination,create_topic,severity
-alarm1,oci_computeagent,CpuUtilization[1m].mean() > 80,demo1,true,
-alarm2,oci_computeagent,CpuUtilization[1m].mean() > 50,demotopic,false,WARNING
-alarm3,oci_computeagent,MemoryUtilization[1m].mean() > 80,demo1,true,
+key,display_name,namespace,query,destination,severity,create_topic,resource_group
+alarm1,HighCPUUtilisation,oci_computeagent,CpuUtilization[1m].mean() > 80,email,WARNING,false,
+alarm2,StackmonCPUTotal,oracle_appmgmt,"CpuUtilization[1m]{resourceName = ""grafana"", Type = ""Total""}.mean() > 50",email,WARNING,false,host
+alarm3,HighMemoryUtilisation,oci_computeagent,MemoryUtilization[1m].mean() > 80,newtopic,WARNING,true,

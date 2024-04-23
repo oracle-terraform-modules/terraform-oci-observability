@@ -8,5 +8,8 @@ terraform {
       version = ">= 4.67.3"
     }
   }
-  required_version = ">= 1.3.0"
+  # required_version = ">= 1.3.0"
+  required_version = ">= 1.2.0"
+  # Only use below statment if terraform version <= 1.2.x
+  experiments = [ module_variable_optional_attrs ]
 }

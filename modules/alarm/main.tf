@@ -4,12 +4,17 @@
 resource "oci_ons_notification_topic" "this" {
   for_each       = { for k, v in var.notification : k => v if v.create_topic == true }
   compartment_id = var.compartment_ocid
-  name           = var.label_prefix == "none" ? each.key : format("%s_%s", var.label_prefix, each.key)
-
+  name           = var.topic_name_prefix == "none" ? each.key : format("%s-%s", var.topic_name_prefix, each.key)
+  
   description   = each.value.description == null ? format("%s%s", each.key, " topic created by Terraform") : each.value.description
   defined_tags  = each.value.defined_tags
   freeform_tags = each.value.freeform_tags
-
+  lifecycle {
+    ignore_changes = [
+      defined_tags["Oracle-Tags.CreatedBy"],
+      defined_tags["Oracle-Tags.CreatedOn"]
+    ]
+  }
 }
 
 data "oci_ons_notification_topics" "existing_topic" {
@@ -31,16 +36,22 @@ resource "oci_ons_subscription" "this" {
 
   defined_tags  = each.value.defined_tags
   freeform_tags = each.value.freeform_tags
+  lifecycle {
+    ignore_changes = [
+      defined_tags["Oracle-Tags.CreatedBy"],
+      defined_tags["Oracle-Tags.CreatedOn"]
+    ]
+  }
 }
 
 resource "oci_monitoring_alarm" "this" {
   for_each                                      = length(var.alarm_def) > 0 ? var.alarm_def : {}
   compartment_id                                = var.compartment_ocid
   destinations                                  = [try(oci_ons_notification_topic.this[each.value.destination].id, data.oci_ons_notification_topics.existing_topic[each.value.destination].notification_topics[0].topic_id, each.value.destination)]
-  display_name                                  = var.label_prefix == "none" ? each.value.display_name : format("%s_%s", var.label_prefix, each.value.display_name)
+  display_name                                  = var.alarm_name_prefix == "none" ? each.key : format("%s-%s", var.alarm_name_prefix, each.key)
   is_enabled                                    = each.value.is_enabled
   is_notifications_per_metric_dimension_enabled = each.value.split_notification
-  metric_compartment_id                         = each.value.metric_compartment_id == null ? var.compartment_ocid : each.value.metric_compartment
+  metric_compartment_id                         = each.value.metric_compartment_id == null ? var.compartment_ocid : each.value.metric_compartment_id
   namespace                                     = each.value.namespace
   query                                         = each.value.query
   severity                                      = each.value.severity
@@ -48,10 +59,22 @@ resource "oci_monitoring_alarm" "this" {
   repeat_notification_duration                  = each.value.repeat_notification_duration
   resource_group                                = each.value.resource_group
   resolution                                    = each.value.resolution
+  rule_name                                     = each.value.rule_name
   pending_duration                              = each.value.trigger
   body                                          = each.value.body
   defined_tags                                  = each.value.defined_tags
   freeform_tags                                 = each.value.freeform_tags
+  dynamic "overrides" {
+    for_each = { for k ,v  in coalesce(each.value.overrides, {}) : k => v if each.value.has_overrides }
+
+    content {
+      body = overrides.value.body
+      pending_duration = overrides.value.trigger
+      query = overrides.value.query
+      rule_name = overrides.value.rule_name
+      severity = overrides.value.severity
+    }
+  }
   dynamic "suppression" {
     for_each = (each.value.suppression_from_time != null && each.value.suppression_till_time != null) ? [1] : []
     content {
@@ -59,7 +82,12 @@ resource "oci_monitoring_alarm" "this" {
       time_suppress_until = each.value.suppression_till_time
     }
   }
-
+  lifecycle {
+    ignore_changes = [
+      defined_tags["Oracle-Tags.CreatedBy"],
+      defined_tags["Oracle-Tags.CreatedOn"]
+    ]
+  }
 }
 
 
@@ -70,7 +98,7 @@ locals {
         topic_id      = topic_value.create_topic ? oci_ons_notification_topic.this[topic_key].id : data.oci_ons_notification_topics.existing_topic[topic_key].notification_topics[0].topic_id
         protocol      = subscription_value.protocol
         endpoint      = subscription_value.endpoint
-        subscription  = format("%s_%s", topic_key, subscription_key)
+        subscription  = format("%s-%s", topic_key, subscription_key)
         defined_tags  = topic_value.defined_tags
         freeform_tags = topic_value.freeform_tags
       }

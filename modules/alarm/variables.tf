@@ -11,23 +11,32 @@ variable "alarm_def" {
   description = "OCI Alarm definition"
   type = map(object({
     destination                  = string
-    display_name                 = string
-    severity                     = optional(string, "CRITICAL")
+    display_name                 = optional(string)
+    severity                     = optional(string)
     query                        = string
-    is_enabled                   = optional(bool, true)
+    is_enabled                   = optional(bool)
+    rule_name                    = optional(string)
     namespace                    = string
     metric_compartment_id        = optional(string)
-    repeat_notification_duration = optional(string, "PT5M")
-    trigger                      = optional(string, "PT5M")
+    repeat_notification_duration = optional(string)
+    trigger                      = optional(string)
     suppression_from_time        = optional(string)
     suppression_till_time        = optional(string)
-    message_format               = optional(string, "RAW")
-    body                         = optional(string, null)
+    message_format               = optional(string)
+    body                         = optional(string)
     freeform_tags                = optional(map(string))
     defined_tags                 = optional(map(string))
-    resolution                   = optional(string, "1m")
-    resource_group               = optional(string, null)
-    split_notification           = optional(bool, false)
+    resolution                   = optional(string)
+    resource_group               = optional(string)
+    split_notification           = optional(bool)
+    has_overrides                = optional(bool)
+    overrides                    = optional(map(object({
+      body      = optional(string)
+      trigger   = optional(string)
+      query     = optional(string)
+      rule_name = optional(string)
+      severity  = optional(string)
+    })))
   }))
 }
 
@@ -35,7 +44,7 @@ variable "notification" {
   description = "Notification Topic and Subscription"
   type = map(object({
     description   = optional(string)
-    create_topic  = optional(bool, true)
+    create_topic  = optional(bool)
     defined_tags  = optional(map(string))
     freeform_tags = optional(map(string))
     subscription = optional(map(object({
@@ -45,8 +54,14 @@ variable "notification" {
   }))
 }
 
-variable "label_prefix" {
+variable "alarm_name_prefix" {
   default     = "none"
-  description = "Prefix to be added to the resources"
+  description = "Prefix to be added to alarm resources"
+  type        = string
+}
+
+variable "topic_name_prefix" {
+  default     = "none"
+  description = "Prefix to be added to topic resources"
   type        = string
 }

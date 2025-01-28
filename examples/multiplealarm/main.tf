@@ -12,7 +12,7 @@ module "multiplealarm" {
 locals {
   compartment_ocid = "<compartment_id>"
   alarm_def        = csvdecode(file("./alarm.csv"))
-  alarm_def_map    = { for alarm in local.alarm_def : alarm.display_name => alarm }
+  alarm_def_map    = { for alarm in local.alarm_def : alarm.key => alarm }
   topicmergelist   = distinct([for alarm in local.alarm_def_map : { create_topic = alarm.create_topic, destination = alarm.destination }])
   notification     = { for topic in local.topicmergelist : topic.destination => { create_topic = topic.create_topic } }
 }
